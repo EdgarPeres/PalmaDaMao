@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { PublicFooter } from "@/components/layout/public-footer";
 import { PublicHeader } from "@/components/layout/public-header";
+import { PublicBannerStrip } from "@/modules/banner/components/public-banner-strip";
+import { getPublicBanners } from "@/modules/banner/services/banner.service";
 import { getPublicCategoryGroups } from "@/modules/category-group/services/category-group.service";
 import { CompanyCard } from "@/modules/company/components/company-card";
 import { CompanySearch } from "@/modules/company/components/company-search";
@@ -14,11 +16,12 @@ export const dynamic = "force-dynamic";
 
 export default async function MontividiuPage(): Promise<React.ReactElement> {
   const citySlug = "montividiu";
-  const [city, settings, categoryGroups, companies] = await Promise.all([
+  const [city, settings, categoryGroups, companies, banners] = await Promise.all([
     getPublicCity(citySlug),
     getPublicSiteSettings(),
     getPublicCategoryGroups(),
-    getPublicCompanySections(citySlug)
+    getPublicCompanySections(citySlug),
+    getPublicBanners()
   ]);
 
   if (settings.maintenanceMode) {
@@ -40,6 +43,8 @@ export default async function MontividiuPage(): Promise<React.ReactElement> {
             <p className="mt-3 max-w-lg text-sm opacity-90">{settings.homeText}</p>
           ) : null}
         </div>
+
+        <PublicBannerStrip banners={banners} />
 
         <CompanySearch citySlug={city.slug} />
 
