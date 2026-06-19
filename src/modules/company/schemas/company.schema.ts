@@ -16,15 +16,13 @@ export const companyContactSchema = z
     website: optionalUrlSchema,
     mainLink: optionalUrlSchema
   })
-  .refine(
-    (data) => Boolean(data.whatsapp || data.instagram || data.website || data.mainLink),
-    {
-      message: "Informe pelo menos um canal de contato.",
-      path: ["whatsapp"]
-    }
-  );
+  .refine((data) => Boolean(data.whatsapp || data.instagram || data.website || data.mainLink), {
+    message: "Informe pelo menos um canal de contato.",
+    path: ["whatsapp"]
+  });
 
 export const companyMutationSchema = companyContactSchema.extend({
+  id: optionalTextSchema,
   name: z.string().trim().min(2, "Informe o nome da empresa."),
   cityId: z.string().trim().min(1, "Informe a cidade."),
   description: z
@@ -36,9 +34,9 @@ export const companyMutationSchema = companyContactSchema.extend({
   phone: optionalTextSchema,
   logoUrl: optionalUrlSchema,
   bannerUrl: optionalUrlSchema,
-  active: z.boolean().default(true),
-  featured: z.boolean().default(false),
-  featuredOrder: z.number().int().positive().optional().nullable(),
+  active: z.coerce.boolean().default(true),
+  featured: z.coerce.boolean().default(false),
+  featuredOrder: z.coerce.number().int().positive().optional().nullable().or(z.literal("")),
   categoryIds: z.array(z.string().trim().min(1)).min(1, "Selecione ao menos uma categoria.")
 });
 
