@@ -1,0 +1,13 @@
+node_modules
+.next
+dist
+coverage
+.env
+.env.local
+.env.*.local
+uploads/*
+!uploads/.gitkeep
+!uploads/system/
+!uploads/system/.gitkeep
+*.log
+tsconfig.tsbuildinfo

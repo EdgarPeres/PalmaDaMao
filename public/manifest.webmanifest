@@ -1,0 +1,11 @@
+{
+  "name": "Palma da Mão",
+  "short_name": "Palma da Mão",
+  "description": "As melhores empresas da sua cidade em um só lugar.",
+  "start_url": "/montividiu",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0069FC",
+  "lang": "pt-BR",
+  "icons": []
+}

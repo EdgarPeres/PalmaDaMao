@@ -1,0 +1,201 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SuggestionStatus {
+  PENDING
+  CONVERTED
+  IGNORED
+}
+
+enum ClickEventType {
+  VIEW
+  WHATSAPP
+  INSTAGRAM
+  MAIN_LINK
+}
+
+enum AuditAction {
+  LOGIN
+  LOGOUT
+  CREATE
+  UPDATE
+  DELETE
+}
+
+model UserAdmin {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  active       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  auditLogs    AuditLog[]
+}
+
+model City {
+  id           String         @id @default(cuid())
+  name         String
+  state        String
+  slug         String         @unique
+  description  String?
+  order        Int            @default(0)
+  active       Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  companies    Company[]
+  siteSettings SiteSettings[]
+}
+
+model CategoryGroup {
+  id         String     @id @default(cuid())
+  name       String
+  slug       String     @unique
+  icon       String?
+  color      String?
+  order      Int        @default(0)
+  active     Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  categories Category[]
+}
+
+model Category {
+  id         String            @id @default(cuid())
+  groupId    String
+  name       String
+  slug       String            @unique
+  icon       String?
+  color      String?
+  order      Int               @default(0)
+  active     Boolean           @default(true)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  group      CategoryGroup     @relation(fields: [groupId], references: [id])
+  companies  CompanyCategory[]
+}
+
+model Company {
+  id            String            @id @default(cuid())
+  cityId        String
+  name          String
+  slug          String
+  description   String
+  neighborhood  String?
+  logoUrl       String?
+  bannerUrl     String?
+  whatsapp      String?
+  phone         String?
+  instagram     String?
+  website       String?
+  mainLink      String?
+  active        Boolean           @default(true)
+  featured      Boolean           @default(false)
+  featuredOrder Int?
+  deletedAt     DateTime?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  city          City              @relation(fields: [cityId], references: [id])
+  categories    CompanyCategory[]
+  photos        CompanyPhoto[]
+  schedules     CompanySchedule[]
+  clickEvents   ClickEvent[]
+
+  @@unique([cityId, slug])
+  @@index([active, deletedAt])
+  @@index([featured, featuredOrder])
+}
+
+model CompanyCategory {
+  companyId  String
+  categoryId String
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([companyId, categoryId])
+}
+
+model CompanyPhoto {
+  id        String   @id @default(cuid())
+  companyId String
+  imageUrl  String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model CompanySchedule {
+  id        String  @id @default(cuid())
+  companyId String
+  dayOfWeek Int
+  openTime  String?
+  closeTime String?
+  closed    Boolean @default(false)
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+model Banner {
+  id        String   @id @default(cuid())
+  title     String
+  imageUrl  String
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CompanySuggestion {
+  id        String           @id @default(cuid())
+  name      String
+  category  String
+  phone     String
+  status    SuggestionStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model ClickEvent {
+  id        String         @id @default(cuid())
+  companyId String
+  type      ClickEventType
+  sessionId String
+  createdAt DateTime       @default(now())
+  company   Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, type])
+  @@index([sessionId])
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  adminId   String?
+  action    AuditAction
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime    @default(now())
+  admin     UserAdmin?  @relation(fields: [adminId], references: [id], onDelete: SetNull)
+}
+
+model SiteSettings {
+  id                String   @id @default(cuid())
+  siteName          String
+  slogan            String
+  logoUrl           String?
+  faviconUrl        String?
+  primaryColor      String
+  defaultCityId     String
+  supportWhatsapp   String?
+  officialInstagram String?
+  homeText          String?
+  footerText        String?
+  maintenanceMode   Boolean  @default(false)
+  updatedAt         DateTime @updatedAt
+  defaultCity       City     @relation(fields: [defaultCityId], references: [id])
+}
