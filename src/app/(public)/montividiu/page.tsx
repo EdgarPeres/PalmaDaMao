@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { PublicFooter } from "@/components/layout/public-footer";
 import { PublicHeader } from "@/components/layout/public-header";
 import { getPublicCategoryGroups } from "@/modules/category-group/services/category-group.service";
@@ -18,6 +19,10 @@ export default async function MontividiuPage(): Promise<React.ReactElement> {
     getPublicCategoryGroups(),
     getPublicCompanySections(citySlug)
   ]);
+
+  if (settings.maintenanceMode) {
+    redirect("/manutencao");
+  }
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
