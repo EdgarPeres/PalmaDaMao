@@ -8,6 +8,7 @@ import { getPublicCompanySections } from "@/modules/company/services/public-comp
 import type { PublicCompanyCard } from "@/modules/company/types/public-company";
 import { getPublicCity } from "@/modules/city/services/city.service";
 import { getPublicSiteSettings } from "@/modules/settings/services/settings.service";
+import { SuggestionForm } from "@/modules/suggestion/components/suggestion-form";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +85,8 @@ export default async function MontividiuPage(): Promise<React.ReactElement> {
           </div>
           <CompanyList companies={companies.recent} emptyLabel="Nenhuma empresa cadastrada ainda." />
         </section>
+
+        <SuggestionForm />
       </section>
 
       <PublicFooter footerText={settings.footerText} siteName={settings.siteName} />

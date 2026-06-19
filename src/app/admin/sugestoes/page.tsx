@@ -1,14 +1,23 @@
-import { AdminPlaceholderPage } from "@/modules/admin/components/admin-placeholder-page";
+import { AdminShell } from "@/components/layout/admin-shell";
 import { requireAdminSession } from "@/modules/admin/utils/require-admin-session";
+import { SuggestionTable } from "@/modules/suggestion/components/suggestion-table";
+import { getAdminSuggestions } from "@/modules/suggestion/services/admin-suggestion.service";
 
 export default async function AdminSuggestionsPage(): Promise<React.ReactElement> {
-  const session = await requireAdminSession();
+  const [session, suggestions] = await Promise.all([requireAdminSession(), getAdminSuggestions()]);
 
   return (
-    <AdminPlaceholderPage
-      description="Área reservada para visualizar sugestões e marcar como pendente, convertida ou ignorada."
-      title="Sugestões"
-      userEmail={session.user.email}
-    />
+    <AdminShell userEmail={session.user.email}>
+      <div className="flex flex-col gap-6">
+        <div>
+          <h2 className="text-2xl font-bold">Sugestões</h2>
+          <p className="mt-1 text-sm text-slate-600">
+            Visualize sugestões recebidas e atualize o status sem excluir histórico.
+          </p>
+        </div>
+
+        <SuggestionTable suggestions={suggestions} />
+      </div>
+    </AdminShell>
   );
 }
