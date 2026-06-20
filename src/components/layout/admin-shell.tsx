@@ -1,4 +1,15 @@
-import { Building2, LayoutDashboard, ListTree, LogOut, Settings, Tags } from "lucide-react";
+import {
+  Building2,
+  Images,
+  LayoutDashboard,
+  ListTree,
+  LogOut,
+  Megaphone,
+  Settings,
+  Sparkles,
+  Tags,
+  UserCog
+} from "lucide-react";
 
 type AdminShellProps = {
   children: React.ReactNode;
@@ -10,7 +21,11 @@ const navItems = [
   { label: "Empresas", href: "/admin/empresas", icon: Building2 },
   { label: "Categorias", href: "/admin/categorias", icon: Tags },
   { label: "Grupos", href: "/admin/grupos", icon: ListTree },
-  { label: "Configurações", href: "/admin/configuracoes", icon: Settings }
+  { label: "Banners", href: "/admin/banners", icon: Images },
+  { label: "Destaques", href: "/admin/destaques", icon: Sparkles },
+  { label: "Sugestoes", href: "/admin/sugestoes", icon: Megaphone },
+  { label: "Usuarios", href: "/admin/usuarios", icon: UserCog },
+  { label: "Configuracoes", href: "/admin/configuracoes", icon: Settings }
 ];
 
 export function AdminShell({ children, userEmail }: AdminShellProps): React.ReactElement {
@@ -21,7 +36,7 @@ export function AdminShell({ children, userEmail }: AdminShellProps): React.Reac
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-sm font-medium text-slate-500">Painel administrativo</p>
-              <h1 className="text-lg font-bold">Palma da Mão</h1>
+              <h1 className="text-lg font-bold">Palma da Mao</h1>
             </div>
             <div className="flex items-center gap-3 text-sm text-slate-600">
               <span className="hidden sm:inline">{userEmail}</span>
