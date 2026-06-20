@@ -14,6 +14,7 @@ type CompanyFormProps = {
 };
 
 const initialState: CompanyActionState = { ok: false, message: "" };
+const dayLabels = ["Domingo", "Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado"];
 
 export function CompanyForm({ categories, cities, companies }: CompanyFormProps): React.ReactElement {
   const [selectedId, setSelectedId] = useState("");
@@ -74,8 +75,8 @@ export function CompanyForm({ categories, cities, companies }: CompanyFormProps)
         <Field defaultValue={selectedCompany?.instagram ?? ""} label="Instagram" name="instagram" placeholder="@empresa" selectedId={selectedCompany?.id} />
         <Field defaultValue={selectedCompany?.website ?? ""} label="Site" name="website" placeholder="https://..." selectedId={selectedCompany?.id} />
         <Field defaultValue={selectedCompany?.mainLink ?? ""} label="Link principal" name="mainLink" placeholder="https://..." selectedId={selectedCompany?.id} />
-        <Field defaultValue={selectedCompany?.logoUrl ?? ""} label="Logo URL" name="logoUrl" placeholder="https://..." selectedId={selectedCompany?.id} />
-        <Field defaultValue={selectedCompany?.bannerUrl ?? ""} label="Banner URL" name="bannerUrl" placeholder="https://..." selectedId={selectedCompany?.id} />
+        <Field defaultValue={selectedCompany?.logoUrl ?? ""} label="Logo" name="logoUrl" placeholder="/uploads/logo.png ou https://..." selectedId={selectedCompany?.id} />
+        <Field defaultValue={selectedCompany?.bannerUrl ?? ""} label="Banner" name="bannerUrl" placeholder="/uploads/banner.png ou https://..." selectedId={selectedCompany?.id} />
         <Field defaultValue={selectedCompany?.featuredOrder ?? ""} label="Ordem destaque" name="featuredOrder" placeholder="1" selectedId={selectedCompany?.id} type="number" />
       </div>
 
@@ -105,6 +106,57 @@ export function CompanyForm({ categories, cities, companies }: CompanyFormProps)
               {category.name}
             </label>
           ))}
+        </div>
+      </fieldset>
+
+      <label className="block space-y-2 text-sm font-medium">
+        <span>Galeria</span>
+        <textarea
+          className="min-h-32 w-full rounded-md border border-slate-300 px-3 py-2 font-mono text-sm outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
+          defaultValue={selectedCompany?.photosText ?? ""}
+          key={`photos-${selectedCompany?.id ?? "new"}`}
+          name="photosText"
+          placeholder={"Uma imagem por linha, ate 20 imagens.\n/uploads/empresa/foto-1.png\nhttps://exemplo.com/foto.jpg"}
+        />
+      </label>
+
+      <fieldset className="space-y-3 rounded-lg border border-slate-200 p-4">
+        <legend className="px-1 text-sm font-medium">Horarios informativos</legend>
+        <div className="grid gap-3">
+          {dayLabels.map((day, dayOfWeek) => {
+            const schedule = selectedCompany?.schedules.find((item) => item.dayOfWeek === dayOfWeek);
+
+            return (
+              <div className="grid gap-2 rounded-md bg-slate-50 p-3 sm:grid-cols-[120px_1fr_1fr_auto]" key={day}>
+                <div className="text-sm font-semibold text-slate-700">{day}</div>
+                <input
+                  className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
+                  defaultValue={schedule?.openTime ?? ""}
+                  key={`open-${selectedCompany?.id ?? "new"}-${dayOfWeek}`}
+                  name={`scheduleOpen-${dayOfWeek}`}
+                  placeholder="Abertura"
+                  type="time"
+                />
+                <input
+                  className="h-10 rounded-md border border-slate-300 px-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
+                  defaultValue={schedule?.closeTime ?? ""}
+                  key={`close-${selectedCompany?.id ?? "new"}-${dayOfWeek}`}
+                  name={`scheduleClose-${dayOfWeek}`}
+                  placeholder="Fechamento"
+                  type="time"
+                />
+                <label className="flex items-center gap-2 text-sm font-medium">
+                  <input
+                    defaultChecked={schedule?.closed ?? false}
+                    key={`closed-${selectedCompany?.id ?? "new"}-${dayOfWeek}`}
+                    name={`scheduleClosed-${dayOfWeek}`}
+                    type="checkbox"
+                  />
+                  Fechado
+                </label>
+              </div>
+            );
+          })}
         </div>
       </fieldset>
 

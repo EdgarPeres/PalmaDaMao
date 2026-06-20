@@ -21,6 +21,13 @@ export type AdminCompany = {
   featuredOrder: number | null;
   categoryIds: string[];
   categoriesLabel: string;
+  photosText: string;
+  schedules: Array<{
+    dayOfWeek: number;
+    openTime: string | null;
+    closeTime: string | null;
+    closed: boolean;
+  }>;
 };
 
 export async function listAdminCompanies(): Promise<AdminCompany[]> {
@@ -50,6 +57,21 @@ export async function listAdminCompanies(): Promise<AdminCompany[]> {
           categoryId: true,
           category: { select: { name: true } }
         }
+      },
+      photos: {
+        orderBy: { order: "asc" },
+        select: {
+          imageUrl: true
+        }
+      },
+      schedules: {
+        orderBy: { dayOfWeek: "asc" },
+        select: {
+          dayOfWeek: true,
+          openTime: true,
+          closeTime: true,
+          closed: true
+        }
       }
     }
   });
@@ -73,7 +95,9 @@ export async function listAdminCompanies(): Promise<AdminCompany[]> {
     featured: company.featured,
     featuredOrder: company.featuredOrder,
     categoryIds: company.categories.map((category) => category.categoryId),
-    categoriesLabel: company.categories.map(({ category }) => category.name).join(", ")
+    categoriesLabel: company.categories.map(({ category }) => category.name).join(", "),
+    photosText: company.photos.map((photo) => photo.imageUrl).join("\n"),
+    schedules: company.schedules
   }));
 }
 
@@ -99,6 +123,26 @@ export async function createCompany(input: CompanyMutationInput & { slug: string
         createMany: {
           data: input.categoryIds.map((categoryId) => ({ categoryId }))
         }
+      },
+      photos: {
+        createMany: {
+          data: input.photos
+            .filter((photo) => photo.imageUrl)
+            .map((photo, index) => ({
+              imageUrl: String(photo.imageUrl),
+              order: photo.order || index
+            }))
+        }
+      },
+      schedules: {
+        createMany: {
+          data: input.schedules.map((schedule) => ({
+            dayOfWeek: schedule.dayOfWeek,
+            openTime: schedule.closed ? null : schedule.openTime || null,
+            closeTime: schedule.closed ? null : schedule.closeTime || null,
+            closed: schedule.closed
+          }))
+        }
       }
     }
   });
@@ -107,6 +151,8 @@ export async function createCompany(input: CompanyMutationInput & { slug: string
 export async function updateCompany(input: CompanyMutationInput & { id: string; slug: string }): Promise<void> {
   await prisma.$transaction([
     prisma.companyCategory.deleteMany({ where: { companyId: input.id } }),
+    prisma.companyPhoto.deleteMany({ where: { companyId: input.id } }),
+    prisma.companySchedule.deleteMany({ where: { companyId: input.id } }),
     prisma.company.update({
       where: { id: input.id },
       data: {
@@ -128,6 +174,26 @@ export async function updateCompany(input: CompanyMutationInput & { id: string; 
         categories: {
           createMany: {
             data: input.categoryIds.map((categoryId) => ({ categoryId }))
+          }
+        },
+        photos: {
+          createMany: {
+            data: input.photos
+              .filter((photo) => photo.imageUrl)
+              .map((photo, index) => ({
+                imageUrl: String(photo.imageUrl),
+                order: photo.order || index
+              }))
+          }
+        },
+        schedules: {
+          createMany: {
+            data: input.schedules.map((schedule) => ({
+              dayOfWeek: schedule.dayOfWeek,
+              openTime: schedule.closed ? null : schedule.openTime || null,
+              closeTime: schedule.closed ? null : schedule.closeTime || null,
+              closed: schedule.closed
+            }))
           }
         }
       }

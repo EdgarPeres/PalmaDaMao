@@ -15,6 +15,26 @@ export type CompanyActionState = {
   message: string;
 };
 
+function parsePhotos(formData: FormData) {
+  return String(formData.get("photosText") ?? "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((imageUrl, index) => ({
+      imageUrl,
+      order: index
+    }));
+}
+
+function parseSchedules(formData: FormData) {
+  return Array.from({ length: 7 }, (_, dayOfWeek) => ({
+    dayOfWeek,
+    openTime: formData.get(`scheduleOpen-${dayOfWeek}`) || undefined,
+    closeTime: formData.get(`scheduleClose-${dayOfWeek}`) || undefined,
+    closed: formData.get(`scheduleClosed-${dayOfWeek}`) === "on"
+  })).filter((schedule) => schedule.closed || schedule.openTime || schedule.closeTime);
+}
+
 export async function saveCompanyAction(
   _state: CompanyActionState,
   formData: FormData
@@ -35,7 +55,9 @@ export async function saveCompanyAction(
     active: formData.get("active") === "on",
     featured: formData.get("featured") === "on",
     featuredOrder: formData.get("featuredOrder") || "",
-    categoryIds: formData.getAll("categoryIds")
+    categoryIds: formData.getAll("categoryIds"),
+    photos: parsePhotos(formData),
+    schedules: parseSchedules(formData)
   });
 
   if (!parsed.success) {
