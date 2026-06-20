@@ -4,6 +4,7 @@ import { useActionState, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { saveBannerAction, type BannerActionState } from "@/modules/banner/actions/banner.actions";
 import type { AdminBanner } from "@/modules/banner/repositories/admin-banner.repository";
+import { ImageUploadField } from "@/modules/uploads/components/image-upload-field";
 
 type BannerFormProps = {
   banners: AdminBanner[];
@@ -46,18 +47,46 @@ export function BannerForm({ banners }: BannerFormProps): React.ReactElement {
       </label>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field defaultValue={selectedBanner?.title ?? ""} label="Título" name="title" placeholder="Título do banner" selectedId={selectedBanner?.id} />
-        <Field defaultValue={selectedBanner?.order ?? 0} label="Ordem" name="order" placeholder="0" selectedId={selectedBanner?.id} type="number" />
+        <Field
+          defaultValue={selectedBanner?.title ?? ""}
+          label="Título"
+          name="title"
+          placeholder="Título do banner"
+          selectedId={selectedBanner?.id}
+        />
+        <Field
+          defaultValue={selectedBanner?.order ?? 0}
+          label="Ordem"
+          name="order"
+          placeholder="0"
+          selectedId={selectedBanner?.id}
+          type="number"
+        />
       </div>
 
-      <Field defaultValue={selectedBanner?.imageUrl ?? ""} label="Imagem URL" name="imageUrl" placeholder="/uploads/banner.png ou https://..." selectedId={selectedBanner?.id} />
+      <ImageUploadField
+        defaultValue={selectedBanner?.imageUrl ?? ""}
+        folder="banners"
+        key={`image-${selectedBanner?.id ?? "new"}`}
+        label="Imagem"
+        name="imageUrl"
+      />
 
       <label className="flex items-center gap-3 text-sm font-medium">
-        <input defaultChecked={selectedBanner?.active ?? true} key={`active-${selectedBanner?.id ?? "new"}`} name="active" type="checkbox" />
+        <input
+          defaultChecked={selectedBanner?.active ?? true}
+          key={`active-${selectedBanner?.id ?? "new"}`}
+          name="active"
+          type="checkbox"
+        />
         Banner ativo
       </label>
 
-      {state.message ? <p className={`text-sm font-medium ${state.ok ? "text-green-700" : "text-red-600"}`}>{state.message}</p> : null}
+      {state.message ? (
+        <p className={`text-sm font-medium ${state.ok ? "text-green-700" : "text-red-600"}`}>
+          {state.message}
+        </p>
+      ) : null}
 
       <Button disabled={isPending} type="submit">
         {isPending ? "Salvando..." : selectedBanner ? "Salvar alterações" : "Criar banner"}
@@ -75,7 +104,14 @@ type FieldProps = {
   type?: string;
 };
 
-function Field({ defaultValue, label, name, placeholder, selectedId, type = "text" }: FieldProps): React.ReactElement {
+function Field({
+  defaultValue,
+  label,
+  name,
+  placeholder,
+  selectedId,
+  type = "text"
+}: FieldProps): React.ReactElement {
   return (
     <label className="block space-y-2 text-sm font-medium">
       <span>{label}</span>

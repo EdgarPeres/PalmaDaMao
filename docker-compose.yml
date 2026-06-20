@@ -10,7 +10,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - uploads:/uploads
+      - uploads:/app/uploads
     depends_on:
       - postgres
 

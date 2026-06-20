@@ -18,7 +18,6 @@ Usar Docker para padronizar o ambiente de desenvolvimento e evitar problemas de 
 DATABASE_URL=
 NEXTAUTH_SECRET=
 NEXTAUTH_URL=
-UPLOAD_DIR=/uploads
 ```
 
 ## Comandos esperados
@@ -32,6 +31,8 @@ docker compose exec app npm run prisma:seed
 
 ## Regra
 O projeto deve poder ser iniciado por um novo desenvolvedor apenas com Docker e arquivo .env configurado.
+
+Uploads locais são gravados em `./uploads`, com volume Docker persistente mapeado para `/app/uploads`.
 
 ## Seed inicial
 
