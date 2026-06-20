@@ -3,6 +3,7 @@ import {
   Images,
   LayoutDashboard,
   ListTree,
+  Logs,
   LogOut,
   Megaphone,
   Settings,
@@ -25,6 +26,7 @@ const navItems = [
   { label: "Destaques", href: "/admin/destaques", icon: Sparkles },
   { label: "Sugestoes", href: "/admin/sugestoes", icon: Megaphone },
   { label: "Usuarios", href: "/admin/usuarios", icon: UserCog },
+  { label: "Logs", href: "/admin/logs", icon: Logs },
   { label: "Configuracoes", href: "/admin/configuracoes", icon: Settings }
 ];
 

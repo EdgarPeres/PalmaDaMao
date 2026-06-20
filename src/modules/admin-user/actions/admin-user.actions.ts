@@ -1,8 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireAdminSession } from "@/modules/admin/utils/require-admin-session";
 import { changeAdminUserStatus, saveAdminUser } from "@/modules/admin-user/services/admin-user.service";
 import { adminUserMutationSchema } from "@/modules/admin-user/schemas/admin-user.schema";
+import { recordAuditLog } from "@/modules/audit-log/services/audit-log.service";
 
 export type AdminUserActionState = {
   ok: boolean;
@@ -29,8 +31,21 @@ export async function saveAdminUserAction(
   }
 
   try {
+    const session = await requireAdminSession();
     await saveAdminUser(parsed.data);
+    await recordAuditLog({
+      adminId: session.user.id,
+      action: parsed.data.id ? "UPDATE" : "CREATE",
+      entity: "UserAdmin",
+      entityId: parsed.data.id ?? null,
+      metadata: {
+        email: parsed.data.email,
+        active: parsed.data.active
+      }
+    });
+
     revalidatePath("/admin/usuarios");
+    revalidatePath("/admin/logs");
 
     return {
       ok: true,
@@ -51,6 +66,18 @@ export async function toggleAdminUserActiveAction(formData: FormData): Promise<v
     return;
   }
 
+  const session = await requireAdminSession();
   await changeAdminUserStatus(id);
+  await recordAuditLog({
+    adminId: session.user.id,
+    action: "UPDATE",
+    entity: "UserAdmin",
+    entityId: id,
+    metadata: {
+      statusChanged: true
+    }
+  });
+
   revalidatePath("/admin/usuarios");
+  revalidatePath("/admin/logs");
 }
