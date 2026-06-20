@@ -58,9 +58,9 @@ export function CompanySearch({ citySlug }: CompanySearchProps): React.ReactElem
   }, [citySlug, normalizedQuery]);
 
   return (
-    <section className="space-y-3" aria-label="Busca de empresas">
-      <label className="flex h-12 items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 shadow-sm">
-        <Search aria-hidden="true" className="h-5 w-5 text-slate-500" />
+    <section className="space-y-3" aria-label="Busca de empresas" id="busca">
+      <label className="flex h-14 items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 shadow-sm ring-4 ring-white/60">
+        <Search aria-hidden="true" className="h-5 w-5 text-primary" />
         <span className="sr-only">Pesquisar empresas</span>
         <input
           className="h-full flex-1 bg-transparent text-base outline-none placeholder:text-slate-500"
@@ -89,7 +89,7 @@ export function CompanySearch({ citySlug }: CompanySearchProps): React.ReactElem
                 >
                   <span className="font-semibold">{company.name}</span>
                   <span className="ml-2 text-slate-500">
-                    {[company.neighborhood, company.categories[0]?.name].filter(Boolean).join(" • ")}
+                    {[company.neighborhood, company.categories[0]?.name].filter(Boolean).join(" - ")}
                   </span>
                 </a>
               ))}

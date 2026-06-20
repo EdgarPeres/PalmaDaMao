@@ -80,7 +80,7 @@ export default async function CompanyPage({ params }: CompanyPageProps): Promise
             <div className="min-w-0">
               <h1 className="text-2xl font-bold">{company.name}</h1>
               <p className="mt-1 text-sm text-slate-600">
-                {[company.neighborhood, company.cityName].filter(Boolean).join(" • ")}
+                {[company.neighborhood, company.cityName].filter(Boolean).join(" - ")}
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {company.categories.map((category) => (

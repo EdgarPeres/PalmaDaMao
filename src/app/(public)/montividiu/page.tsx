@@ -46,30 +46,47 @@ export default async function MontividiuPage(): Promise<React.ReactElement> {
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <PublicHeader cityName={city.name} citySlug={city.slug} />
 
-      <section className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 pb-10 pt-4 sm:px-6 lg:px-8">
+      <section className="mx-auto flex w-full max-w-6xl flex-col gap-7 px-4 pb-10 pt-4 sm:px-6 lg:px-8">
         <div
-          className="rounded-lg bg-primary px-5 py-8 text-white shadow-sm"
+          className="overflow-hidden rounded-lg bg-primary text-white shadow-sm"
           style={{ backgroundColor: settings.primaryColor }}
         >
-          <p className="text-sm font-medium opacity-90">{settings.siteName}</p>
-          <h1 className="mt-2 max-w-xl text-3xl font-bold leading-tight">{settings.slogan}</h1>
-          {settings.homeText ? (
-            <p className="mt-3 max-w-lg text-sm opacity-90">{settings.homeText}</p>
-          ) : null}
+          <div className="grid gap-6 px-5 py-8 sm:px-7 lg:grid-cols-[1fr_280px] lg:items-end">
+            <div>
+              <p className="text-sm font-semibold opacity-90">{settings.siteName}</p>
+              <h1 className="mt-3 max-w-2xl text-3xl font-black leading-tight sm:text-4xl">
+                {settings.slogan}
+              </h1>
+              {settings.homeText ? (
+                <p className="mt-4 max-w-xl text-sm leading-6 opacity-90 sm:text-base">{settings.homeText}</p>
+              ) : null}
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="rounded-lg bg-white/15 p-4">
+                <strong className="block text-2xl">{companies.featured.length}</strong>
+                <span className="opacity-90">destaques</span>
+              </div>
+              <div className="rounded-lg bg-white/15 p-4">
+                <strong className="block text-2xl">{categoryGroups.length}</strong>
+                <span className="opacity-90">grupos</span>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <PublicBannerStrip banners={banners} />
 
         <CompanySearch citySlug={city.slug} />
 
+        <PublicBannerStrip banners={banners} />
+
         <section aria-labelledby="categories-title" className="space-y-3">
-          <h2 id="categories-title" className="text-lg font-semibold">
-            Categorias
-          </h2>
+          <SectionHeading
+            eyebrow="Explore"
+            title="Categorias"
+          />
           <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:px-0 lg:grid-cols-6">
             {categoryGroups.map((category) => (
               <article
-                className="min-w-32 rounded-lg border border-slate-200 bg-white p-4 text-sm font-medium shadow-sm"
+                className="min-w-36 rounded-lg border border-slate-200 bg-white p-4 text-sm font-bold text-slate-800 shadow-sm"
                 key={category.id}
               >
                 {category.name}
@@ -79,14 +96,7 @@ export default async function MontividiuPage(): Promise<React.ReactElement> {
         </section>
 
         <section aria-labelledby="featured-title" className="space-y-3">
-          <div className="flex items-center justify-between gap-4">
-            <h2 id="featured-title" className="text-lg font-semibold">
-              Empresas em destaque
-            </h2>
-            <a className="text-sm font-semibold text-primary" href="/montividiu/empresas">
-              Ver todas
-            </a>
-          </div>
+          <SectionHeading eyebrow="Selecao local" title="Empresas em destaque" />
           <CompanyList
             companies={companies.featured}
             emptyLabel="Nenhuma empresa em destaque cadastrada ainda."
@@ -94,14 +104,7 @@ export default async function MontividiuPage(): Promise<React.ReactElement> {
         </section>
 
         <section aria-labelledby="recent-title" className="space-y-3">
-          <div className="flex items-center justify-between gap-4">
-            <h2 id="recent-title" className="text-lg font-semibold">
-              Recentemente adicionadas
-            </h2>
-            <a className="text-sm font-semibold text-primary" href="/montividiu/empresas">
-              Ver todas
-            </a>
-          </div>
+          <SectionHeading eyebrow="Novidades" title="Recentemente adicionadas" />
           <CompanyList companies={companies.recent} emptyLabel="Nenhuma empresa cadastrada ainda." />
         </section>
 
@@ -110,6 +113,20 @@ export default async function MontividiuPage(): Promise<React.ReactElement> {
 
       <PublicFooter footerText={settings.footerText} siteName={settings.siteName} />
     </main>
+  );
+}
+
+type SectionHeadingProps = {
+  eyebrow: string;
+  title: string;
+};
+
+function SectionHeading({ eyebrow, title }: SectionHeadingProps): React.ReactElement {
+  return (
+    <div>
+      <p className="text-xs font-bold uppercase tracking-wide text-primary">{eyebrow}</p>
+      <h2 className="mt-1 text-xl font-black text-slate-950">{title}</h2>
+    </div>
   );
 }
 
