@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 import { PublicFooter } from "@/components/layout/public-footer";
 import { PublicHeader } from "@/components/layout/public-header";
 import { PublicBannerStrip } from "@/modules/banner/components/public-banner-strip";
@@ -13,6 +14,19 @@ import { getPublicSiteSettings } from "@/modules/settings/services/settings.serv
 import { SuggestionForm } from "@/modules/suggestion/components/suggestion-form";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Empresas em Montividiu",
+  description: "Encontre empresas, servicos e contatos comerciais em Montividiu.",
+  alternates: {
+    canonical: "/montividiu"
+  },
+  openGraph: {
+    title: "Empresas em Montividiu",
+    description: "Encontre empresas, servicos e contatos comerciais em Montividiu.",
+    url: "/montividiu"
+  }
+};
 
 export default async function MontividiuPage(): Promise<React.ReactElement> {
   const citySlug = "montividiu";

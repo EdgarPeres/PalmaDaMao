@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PublicFooter } from "@/components/layout/public-footer";
 import { PublicHeader } from "@/components/layout/public-header";
@@ -17,6 +18,34 @@ type CompanyPageProps = {
 };
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: CompanyPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const company = await getPublicCompanyDetail("montividiu", slug);
+
+  if (!company) {
+    return {
+      title: "Empresa nao encontrada"
+    };
+  }
+
+  const description = company.description.slice(0, 155);
+
+  return {
+    title: company.name,
+    description,
+    alternates: {
+      canonical: `/montividiu/empresa/${company.slug}`
+    },
+    openGraph: {
+      title: company.name,
+      description,
+      url: `/montividiu/empresa/${company.slug}`,
+      type: "article",
+      images: company.bannerUrl ? [{ url: company.bannerUrl }] : [{ url: company.logoUrl }]
+    }
+  };
+}
 
 export default async function CompanyPage({ params }: CompanyPageProps): Promise<React.ReactElement> {
   const { slug } = await params;
