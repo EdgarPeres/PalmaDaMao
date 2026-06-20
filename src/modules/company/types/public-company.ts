@@ -15,6 +15,27 @@ export type PublicCompanyCard = {
   }>;
 };
 
+export type PublicCompanyDetail = PublicCompanyCard & {
+  description: string;
+  whatsapp: string | null;
+  phone: string | null;
+  instagram: string | null;
+  website: string | null;
+  mainLink: string | null;
+  photos: Array<{
+    id: string;
+    imageUrl: string;
+    order: number;
+  }>;
+  schedules: Array<{
+    id: string;
+    dayOfWeek: number;
+    openTime: string | null;
+    closeTime: string | null;
+    closed: boolean;
+  }>;
+};
+
 type CompanyRecord = {
   id: string;
   name: string;
@@ -34,6 +55,27 @@ type CompanyRecord = {
   }>;
 };
 
+type CompanyDetailRecord = CompanyRecord & {
+  description: string;
+  whatsapp: string | null;
+  phone: string | null;
+  instagram: string | null;
+  website: string | null;
+  mainLink: string | null;
+  photos: Array<{
+    id: string;
+    imageUrl: string;
+    order: number;
+  }>;
+  schedules: Array<{
+    id: string;
+    dayOfWeek: number;
+    openTime: string | null;
+    closeTime: string | null;
+    closed: boolean;
+  }>;
+};
+
 export function toPublicCompanyCard(company: CompanyRecord): PublicCompanyCard {
   return {
     id: company.id,
@@ -45,5 +87,19 @@ export function toPublicCompanyCard(company: CompanyRecord): PublicCompanyCard {
     logoUrl: company.logoUrl || DEFAULT_COMPANY_LOGO_URL,
     bannerUrl: company.bannerUrl,
     categories: company.categories.map(({ category }) => category)
+  };
+}
+
+export function toPublicCompanyDetail(company: CompanyDetailRecord): PublicCompanyDetail {
+  return {
+    ...toPublicCompanyCard(company),
+    description: company.description,
+    whatsapp: company.whatsapp,
+    phone: company.phone,
+    instagram: company.instagram,
+    website: company.website,
+    mainLink: company.mainLink,
+    photos: company.photos,
+    schedules: company.schedules
   };
 }

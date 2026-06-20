@@ -7,7 +7,10 @@ type CompanyCardProps = {
 
 export function CompanyCard({ company }: CompanyCardProps): React.ReactElement {
   return (
-    <article className="min-w-64 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm sm:min-w-0">
+    <a
+      className="block min-w-64 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm transition hover:border-primary sm:min-w-0"
+      href={`/${company.citySlug}/empresa/${company.slug}`}
+    >
       <div className="relative h-28 bg-slate-100">
         {company.bannerUrl ? (
           <Image
@@ -45,6 +48,6 @@ export function CompanyCard({ company }: CompanyCardProps): React.ReactElement {
           </div>
         ) : null}
       </div>
-    </article>
+    </a>
   );
 }

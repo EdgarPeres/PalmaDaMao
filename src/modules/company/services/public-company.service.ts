@@ -1,9 +1,10 @@
 import {
+  getCompanyBySlug,
   listFeaturedCompanies,
   listRecentCompanies,
   searchCompanies
 } from "@/modules/company/repositories/company.repository";
-import type { PublicCompanyCard } from "@/modules/company/types/public-company";
+import type { PublicCompanyCard, PublicCompanyDetail } from "@/modules/company/types/public-company";
 
 export type PublicCompanySections = {
   featured: PublicCompanyCard[];
@@ -31,5 +32,16 @@ export async function searchPublicCompanies(
     return await searchCompanies(citySlug, query);
   } catch {
     return [];
+  }
+}
+
+export async function getPublicCompanyDetail(
+  citySlug: string,
+  companySlug: string
+): Promise<PublicCompanyDetail | null> {
+  try {
+    return await getCompanyBySlug(citySlug, companySlug);
+  } catch {
+    return null;
   }
 }
