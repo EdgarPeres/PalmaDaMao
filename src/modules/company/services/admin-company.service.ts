@@ -5,6 +5,7 @@ import {
   softDeleteCompany,
   toggleCompanyActive,
   toggleCompanyFeatured,
+  updateCompanyHighlight,
   updateCompany
 } from "@/modules/company/repositories/admin-company.repository";
 import type { CompanyMutationInput } from "@/modules/company/schemas/company.schema";
@@ -42,4 +43,14 @@ export async function changeCompanyActiveStatus(id: string): Promise<void> {
 
 export async function changeCompanyFeaturedStatus(id: string): Promise<void> {
   await toggleCompanyFeatured(id);
+}
+
+export async function saveCompanyHighlight(
+  id: string,
+  input: {
+    featured: boolean;
+    featuredOrder: number | null;
+  }
+): Promise<void> {
+  await updateCompanyHighlight(id, input);
 }

@@ -164,3 +164,16 @@ export async function toggleCompanyFeatured(id: string): Promise<void> {
 
   await prisma.company.update({ where: { id }, data: { featured: !company.featured } });
 }
+
+export async function updateCompanyHighlight(
+  id: string,
+  input: {
+    featured: boolean;
+    featuredOrder: number | null;
+  }
+): Promise<void> {
+  await prisma.company.update({
+    where: { id },
+    data: input
+  });
+}

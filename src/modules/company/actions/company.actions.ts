@@ -5,6 +5,7 @@ import {
   changeCompanyActiveStatus,
   changeCompanyFeaturedStatus,
   removeCompany,
+  saveCompanyHighlight,
   saveCompany
 } from "@/modules/company/services/admin-company.service";
 import { companyMutationSchema } from "@/modules/company/schemas/company.schema";
@@ -84,5 +85,20 @@ export async function softDeleteCompanyAction(formData: FormData): Promise<void>
   await removeCompany(id);
   revalidatePath("/admin/empresas");
   revalidatePath("/admin/dashboard");
+  revalidatePath("/montividiu");
+}
+
+export async function updateCompanyHighlightAction(formData: FormData): Promise<void> {
+  const id = String(formData.get("id") ?? "");
+  const featuredOrderValue = String(formData.get("featuredOrder") ?? "");
+
+  if (!id) return;
+
+  await saveCompanyHighlight(id, {
+    featured: formData.get("featured") === "on",
+    featuredOrder: featuredOrderValue ? Number(featuredOrderValue) : null
+  });
+  revalidatePath("/admin/destaques");
+  revalidatePath("/admin/empresas");
   revalidatePath("/montividiu");
 }
