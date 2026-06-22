@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createSuggestion } from "@/modules/suggestion/repositories/suggestion.repository";
 import { createSuggestionSchema } from "@/modules/suggestion/schemas/suggestion.schema";
 
@@ -29,20 +30,21 @@ export async function createSuggestionAction(
   if (parsed.data.honeypot) {
     return {
       ok: true,
-      message: "Sugestão recebida."
+      message: "Sugestao recebida."
     };
   }
 
   try {
     await createSuggestion(parsed.data);
+    revalidatePath("/admin/sugestoes");
     return {
       ok: true,
-      message: "Sugestão recebida."
+      message: "Sugestao recebida."
     };
   } catch {
     return {
       ok: false,
-      message: "Não foi possível enviar a sugestão agora."
+      message: "Nao foi possivel enviar a sugestao agora."
     };
   }
 }

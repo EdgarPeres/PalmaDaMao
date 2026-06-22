@@ -10,9 +10,9 @@ export default async function AdminSuggestionsPage(): Promise<React.ReactElement
     <AdminShell userEmail={session.user.email}>
       <div className="flex flex-col gap-6">
         <div>
-          <h2 className="text-2xl font-bold">Sugestões</h2>
+          <h2 className="text-2xl font-bold">Sugestoes</h2>
           <p className="mt-1 text-sm text-slate-600">
-            Visualize sugestões recebidas e atualize o status sem excluir histórico.
+            Visualize sugestoes recebidas e atualize o status sem excluir historico.
           </p>
         </div>
 
