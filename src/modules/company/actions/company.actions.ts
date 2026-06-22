@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireAdminSession } from "@/modules/admin/utils/require-admin-session";
+import { recordAuditLog } from "@/modules/audit-log/services/audit-log.service";
 import {
   changeCompanyActiveStatus,
   changeCompanyFeaturedStatus,
@@ -68,9 +70,22 @@ export async function saveCompanyAction(
   }
 
   try {
+    const session = await requireAdminSession();
     await saveCompany(parsed.data);
+    await recordAuditLog({
+      adminId: session.user.id,
+      action: parsed.data.id ? "UPDATE" : "CREATE",
+      entity: "Company",
+      entityId: parsed.data.id || null,
+      metadata: {
+        name: parsed.data.name,
+        active: parsed.data.active,
+        featured: parsed.data.featured
+      }
+    });
     revalidatePath("/admin/empresas");
     revalidatePath("/admin/dashboard");
+    revalidatePath("/admin/logs");
     revalidatePath("/montividiu");
 
     return {
@@ -88,25 +103,54 @@ export async function saveCompanyAction(
 export async function toggleCompanyActiveAction(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
+  const session = await requireAdminSession();
   await changeCompanyActiveStatus(id);
+  await recordAuditLog({
+    adminId: session.user.id,
+    action: "UPDATE",
+    entity: "Company",
+    entityId: id,
+    metadata: { statusChanged: true }
+  });
   revalidatePath("/admin/empresas");
+  revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/logs");
   revalidatePath("/montividiu");
 }
 
 export async function toggleCompanyFeaturedAction(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
+  const session = await requireAdminSession();
   await changeCompanyFeaturedStatus(id);
+  await recordAuditLog({
+    adminId: session.user.id,
+    action: "UPDATE",
+    entity: "Company",
+    entityId: id,
+    metadata: { featuredChanged: true }
+  });
   revalidatePath("/admin/empresas");
+  revalidatePath("/admin/destaques");
+  revalidatePath("/admin/logs");
   revalidatePath("/montividiu");
 }
 
 export async function softDeleteCompanyAction(formData: FormData): Promise<void> {
   const id = String(formData.get("id") ?? "");
   if (!id) return;
+  const session = await requireAdminSession();
   await removeCompany(id);
+  await recordAuditLog({
+    adminId: session.user.id,
+    action: "DELETE",
+    entity: "Company",
+    entityId: id,
+    metadata: { softDelete: true }
+  });
   revalidatePath("/admin/empresas");
   revalidatePath("/admin/dashboard");
+  revalidatePath("/admin/logs");
   revalidatePath("/montividiu");
 }
 
@@ -116,11 +160,23 @@ export async function updateCompanyHighlightAction(formData: FormData): Promise<
 
   if (!id) return;
 
+  const session = await requireAdminSession();
   await saveCompanyHighlight(id, {
     featured: formData.get("featured") === "on",
     featuredOrder: featuredOrderValue ? Number(featuredOrderValue) : null
   });
+  await recordAuditLog({
+    adminId: session.user.id,
+    action: "UPDATE",
+    entity: "Company",
+    entityId: id,
+    metadata: {
+      featured: formData.get("featured") === "on",
+      featuredOrder: featuredOrderValue || null
+    }
+  });
   revalidatePath("/admin/destaques");
   revalidatePath("/admin/empresas");
+  revalidatePath("/admin/logs");
   revalidatePath("/montividiu");
 }

@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { requireAdminSession } from "@/modules/admin/utils/require-admin-session";
+import { recordAuditLog } from "@/modules/audit-log/services/audit-log.service";
 import { saveSiteSettings } from "@/modules/settings/services/admin-settings.service";
 import { siteSettingsMutationSchema } from "@/modules/settings/schemas/settings.schema";
 
@@ -35,8 +37,20 @@ export async function saveSettingsAction(
   }
 
   try {
+    const session = await requireAdminSession();
     await saveSiteSettings(parsed.data);
+    await recordAuditLog({
+      adminId: session.user.id,
+      action: "UPDATE",
+      entity: "SiteSettings",
+      entityId: null,
+      metadata: {
+        siteName: parsed.data.siteName,
+        maintenanceMode: parsed.data.maintenanceMode
+      }
+    });
     revalidatePath("/admin/configuracoes");
+    revalidatePath("/admin/logs");
     revalidatePath("/montividiu");
     revalidatePath("/manutencao");
 
