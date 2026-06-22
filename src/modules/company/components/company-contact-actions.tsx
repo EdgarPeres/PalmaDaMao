@@ -11,7 +11,7 @@ type CompanyContactActionsProps = {
 type ContactAction = {
   href: string;
   label: string;
-  type: "WHATSAPP" | "INSTAGRAM" | "MAIN_LINK";
+  metricType?: "WHATSAPP" | "INSTAGRAM" | "MAIN_LINK";
   icon: typeof MessageCircle;
   primary?: boolean;
 };
@@ -31,27 +31,27 @@ export function CompanyContactActions({ company }: CompanyContactActionsProps): 
     contacts.push({
       href: `https://wa.me/${company.whatsapp.replace(/\D/g, "")}`,
       label: "WhatsApp",
-      type: "WHATSAPP",
+      metricType: "WHATSAPP",
       icon: MessageCircle,
       primary: true
     });
   }
 
   if (company.mainLink) {
-    contacts.push({ href: company.mainLink, label: "Link principal", type: "MAIN_LINK", icon: LinkIcon });
+    contacts.push({ href: company.mainLink, label: "Link principal", metricType: "MAIN_LINK", icon: LinkIcon });
   }
 
   if (company.instagram) {
     contacts.push({
       href: normalizeInstagramHref(company.instagram),
       label: "Instagram",
-      type: "INSTAGRAM",
+      metricType: "INSTAGRAM",
       icon: AtSign
     });
   }
 
   if (company.website) {
-    contacts.push({ href: company.website, label: "Site", type: "MAIN_LINK", icon: ExternalLink });
+    contacts.push({ href: company.website, label: "Site", icon: ExternalLink });
   }
 
   return (
@@ -67,7 +67,11 @@ export function CompanyContactActions({ company }: CompanyContactActionsProps): 
             }
             href={contact.href}
             key={contact.label}
-            onClick={() => registerExternalClick(company.id, contact.type)}
+            onClick={() => {
+              if (contact.metricType) {
+                registerExternalClick(company.id, contact.metricType);
+              }
+            }}
             rel="noreferrer"
             target="_blank"
           >
@@ -80,7 +84,7 @@ export function CompanyContactActions({ company }: CompanyContactActionsProps): 
   );
 }
 
-function registerExternalClick(companyId: string, type: ContactAction["type"]): void {
+function registerExternalClick(companyId: string, type: NonNullable<ContactAction["metricType"]>): void {
   const sessionId = getOrCreateMetricSessionId();
 
   fetch("/api/metrics", {

@@ -7,13 +7,13 @@ export async function POST(request: Request): Promise<NextResponse> {
   const parsed = registerMetricSchema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ ok: false, error: "Dados inválidos." }, { status: 400 });
+    return NextResponse.json({ ok: false, error: "Dados invalidos." }, { status: 400 });
   }
 
   try {
     await registerMetric(parsed.data);
     return NextResponse.json({ ok: true });
   } catch {
-    return NextResponse.json({ ok: false, error: "Não foi possível registrar métrica." }, { status: 500 });
+    return NextResponse.json({ ok: false, error: "Nao foi possivel registrar metrica." }, { status: 500 });
   }
 }
