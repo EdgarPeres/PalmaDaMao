@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { saveCompanyAction, type CompanyActionState } from "@/modules/company/actions/company.actions";
+import { GalleryUploadField } from "@/modules/uploads/components/gallery-upload-field";
 import { ImageUploadField } from "@/modules/uploads/components/image-upload-field";
 import type { AdminCompany } from "@/modules/company/repositories/admin-company.repository";
 import type { AdminCategory } from "@/modules/category/repositories/admin-category.repository";
@@ -122,16 +123,13 @@ export function CompanyForm({ categories, cities, companies }: CompanyFormProps)
         </div>
       </fieldset>
 
-      <label className="block space-y-2 text-sm font-medium">
-        <span>Galeria</span>
-        <textarea
-          className="min-h-32 w-full rounded-md border border-slate-300 px-3 py-2 font-mono text-sm outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
-          defaultValue={selectedCompany?.photosText ?? ""}
-          key={`photos-${selectedCompany?.id ?? "new"}`}
-          name="photosText"
-          placeholder={"Uma imagem por linha, ate 20 imagens.\n/uploads/empresa/foto-1.png\nhttps://exemplo.com/foto.jpg"}
-        />
-      </label>
+      <GalleryUploadField
+        defaultValue={selectedCompany?.photosText ?? ""}
+        folder="company-gallery"
+        key={`photos-${selectedCompany?.id ?? "new"}`}
+        label="Galeria"
+        name="photosText"
+      />
 
       <fieldset className="space-y-3 rounded-lg border border-slate-200 p-4">
         <legend className="px-1 text-sm font-medium">Horarios informativos</legend>
