@@ -56,7 +56,7 @@ export async function saveCategoryAction(
   } catch {
     return {
       ok: false,
-      message: "Não foi possível salvar a categoria. Verifique se já existe uma categoria com esse nome."
+      message: "Nao foi possivel salvar a categoria. Verifique se ja existe uma categoria com esse nome."
     };
   }
 }

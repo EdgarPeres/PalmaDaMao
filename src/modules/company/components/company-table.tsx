@@ -39,7 +39,7 @@ export function CompanyTable({ companies }: CompanyTableProps): React.ReactEleme
                 <td className="px-4 py-3 text-slate-600">{company.cityName}</td>
                 <td className="px-4 py-3 text-slate-600">{company.categoriesLabel || "-"}</td>
                 <td className="px-4 py-3">{company.active ? "Ativa" : "Inativa"}</td>
-                <td className="px-4 py-3">{company.featured ? "Sim" : "Não"}</td>
+                <td className="px-4 py-3">{company.featured ? "Sim" : "Nao"}</td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">
                     <ActionForm action={toggleCompanyActiveAction} id={company.id} label={company.active ? "Inativar" : "Ativar"} />

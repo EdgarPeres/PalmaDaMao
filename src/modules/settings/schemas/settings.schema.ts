@@ -12,7 +12,7 @@ export const siteSettingsMutationSchema = z.object({
     .string()
     .trim()
     .regex(/^#[0-9A-Fa-f]{6}$/, "Informe uma cor hexadecimal válida."),
-  defaultCityId: z.string().trim().min(1, "Informe a cidade padrão."),
+  defaultCityId: z.string().trim().min(1, "Informe a cidade padrao."),
   supportWhatsapp: optionalTextSchema,
   officialInstagram: optionalTextSchema,
   homeText: optionalTextSchema,

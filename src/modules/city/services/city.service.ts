@@ -6,7 +6,7 @@ const montividiuFallback: PublicCity = {
   name: "Montividiu",
   state: "GO",
   slug: "montividiu",
-  description: "Cidade padrão do MVP"
+  description: "Cidade padrao do MVP"
 };
 
 export async function getPublicCity(slug: string): Promise<PublicCity> {

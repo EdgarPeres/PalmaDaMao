@@ -20,7 +20,7 @@ export default async function AdminCompaniesPage(): Promise<React.ReactElement> 
         <div>
           <h2 className="text-2xl font-bold">Empresas</h2>
           <p className="mt-1 text-sm text-slate-600">
-            Gerencie empresas, contatos, categorias, destaque e visibilidade pública.
+            Gerencie empresas, contatos, categorias, destaque e visibilidade publica.
           </p>
         </div>
 

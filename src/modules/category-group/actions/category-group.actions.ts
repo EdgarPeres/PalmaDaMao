@@ -55,7 +55,7 @@ export async function saveCategoryGroupAction(
   } catch {
     return {
       ok: false,
-      message: "Não foi possível salvar o grupo. Verifique se já existe um grupo com esse nome."
+      message: "Nao foi possivel salvar o grupo. Verifique se ja existe um grupo com esse nome."
     };
   }
 }

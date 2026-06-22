@@ -27,7 +27,7 @@ export function LoginForm(): React.ReactElement {
     setIsSubmitting(false);
 
     if (!response?.ok) {
-      setErrorMessage("E-mail ou senha inválidos.");
+      setErrorMessage("E-mail ou senha invalidos.");
       return;
     }
 

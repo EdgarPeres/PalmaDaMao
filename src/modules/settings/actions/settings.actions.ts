@@ -56,12 +56,12 @@ export async function saveSettingsAction(
 
     return {
       ok: true,
-      message: "Configurações atualizadas."
+      message: "Configuracoes atualizadas."
     };
   } catch {
     return {
       ok: false,
-      message: "Não foi possível salvar as configurações."
+      message: "Nao foi possivel salvar as configuracoes."
     };
   }
 }

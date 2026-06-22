@@ -37,7 +37,7 @@ export function HighlightTable({ companies }: HighlightTableProps): React.ReactE
                 <tr key={company.id}>
                   <td className="px-4 py-3 font-medium text-slate-950">{company.name}</td>
                   <td className="px-4 py-3 text-slate-600">{company.categoriesLabel || "-"}</td>
-                  <td className="px-4 py-3 text-slate-600">{company.active ? "Sim" : "Não"}</td>
+                  <td className="px-4 py-3 text-slate-600">{company.active ? "Sim" : "Nao"}</td>
                   <td className="px-4 py-3">
                     <form action={updateCompanyHighlightAction} id={formId}>
                       <input name="id" type="hidden" value={company.id} />

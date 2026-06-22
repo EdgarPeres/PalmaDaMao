@@ -13,7 +13,7 @@ export default async function AdminBannersPage(): Promise<React.ReactElement> {
         <div>
           <h2 className="text-2xl font-bold">Banners</h2>
           <p className="mt-1 text-sm text-slate-600">
-            Gerencie os banners exibidos na home. O MVP permite até 5 ativos.
+            Gerencie os banners exibidos na home. O MVP permite ate 5 ativos.
           </p>
         </div>
 

@@ -95,7 +95,7 @@ export async function saveCompanyAction(
   } catch {
     return {
       ok: false,
-      message: "Não foi possível salvar a empresa. Verifique dados duplicados ou inválidos."
+      message: "Nao foi possivel salvar a empresa. Verifique dados duplicados ou invalidos."
     };
   }
 }
