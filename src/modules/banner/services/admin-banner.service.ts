@@ -6,6 +6,7 @@ import {
   updateBanner
 } from "@/modules/banner/repositories/admin-banner.repository";
 import type { BannerMutationInput } from "@/modules/banner/schemas/banner.schema";
+import { deleteImage } from "@/modules/uploads/services/upload.service";
 
 export async function getAdminBanners() {
   try {
@@ -33,5 +34,9 @@ export async function saveBanner(input: BannerMutationInput): Promise<void> {
 }
 
 export async function removeBanner(id: string): Promise<void> {
-  await deleteBanner(id);
+  const deletedBanner = await deleteBanner(id);
+
+  if (deletedBanner.imageUrl.startsWith("/uploads/")) {
+    await deleteImage(deletedBanner.imageUrl);
+  }
 }

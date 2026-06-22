@@ -53,7 +53,7 @@ export async function saveBannerAction(
   } catch {
     return {
       ok: false,
-      message: "Não foi possível salvar. O limite é de 5 banners ativos."
+      message: "Nao foi possivel salvar. O limite e de 5 banners ativos."
     };
   }
 }

@@ -56,8 +56,16 @@ export async function updateBanner(input: BannerMutationInput & { id: string }):
   });
 }
 
-export async function deleteBanner(id: string): Promise<void> {
-  await prisma.banner.delete({
-    where: { id }
+export async function deleteBanner(id: string): Promise<AdminBanner> {
+  return prisma.banner.delete({
+    where: { id },
+    select: {
+      id: true,
+      title: true,
+      imageUrl: true,
+      order: true,
+      active: true,
+      createdAt: true
+    }
   });
 }
