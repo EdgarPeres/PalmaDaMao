@@ -44,6 +44,52 @@ export async function listRecentCompanies(citySlug: string): Promise<PublicCompa
   return companies.map(toPublicCompanyCard);
 }
 
+export async function listCompanies(
+  citySlug: string,
+  query?: string
+): Promise<PublicCompanyCard[]> {
+  const trimmedQuery = query?.trim();
+
+  const companies = await prisma.company.findMany({
+    where: {
+      active: true,
+      deletedAt: null,
+      city: {
+        slug: citySlug,
+        active: true
+      },
+      ...(trimmedQuery
+        ? {
+            OR: [
+              {
+                name: {
+                  contains: trimmedQuery,
+                  mode: "insensitive" as const
+                }
+              },
+              {
+                categories: {
+                  some: {
+                    category: {
+                      name: {
+                        contains: trimmedQuery,
+                        mode: "insensitive" as const
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        : {})
+    },
+    orderBy: [{ featured: "desc" }, { featuredOrder: "asc" }, { name: "asc" }],
+    select: PUBLIC_COMPANY_SELECT
+  });
+
+  return companies.map(toPublicCompanyCard);
+}
+
 export async function searchCompanies(citySlug: string, query: string): Promise<PublicCompanyCard[]> {
   const trimmedQuery = query.trim();
 

@@ -1,5 +1,6 @@
 import {
   getCompanyBySlug,
+  listCompanies,
   listFeaturedCompanies,
   listRecentCompanies,
   searchCompanies
@@ -30,6 +31,17 @@ export async function searchPublicCompanies(
 ): Promise<PublicCompanyCard[]> {
   try {
     return await searchCompanies(citySlug, query);
+  } catch {
+    return [];
+  }
+}
+
+export async function getPublicCompanies(
+  citySlug: string,
+  query?: string
+): Promise<PublicCompanyCard[]> {
+  try {
+    return await listCompanies(citySlug, query);
   } catch {
     return [];
   }
