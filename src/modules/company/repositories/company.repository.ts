@@ -71,6 +71,10 @@ export async function listCompanies(
                 categories: {
                   some: {
                     category: {
+                      active: true,
+                      group: {
+                        active: true
+                      },
                       name: {
                         contains: trimmedQuery,
                         mode: "insensitive" as const
@@ -116,6 +120,10 @@ export async function searchCompanies(citySlug: string, query: string): Promise<
           categories: {
             some: {
               category: {
+                active: true,
+                group: {
+                  active: true
+                },
                 name: {
                   contains: trimmedQuery,
                   mode: "insensitive"

@@ -17,6 +17,14 @@ export const PUBLIC_COMPANY_SELECT = {
     }
   },
   categories: {
+    where: {
+      category: {
+        active: true,
+        group: {
+          active: true
+        }
+      }
+    },
     select: {
       category: {
         select: {
