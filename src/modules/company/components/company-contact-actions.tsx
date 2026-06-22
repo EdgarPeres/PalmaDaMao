@@ -2,6 +2,7 @@
 
 import { AtSign, ExternalLink, Link as LinkIcon, MessageCircle } from "lucide-react";
 import type { PublicCompanyDetail } from "@/modules/company/types/public-company";
+import { getOrCreateMetricSessionId } from "@/modules/metrics/utils/metric-session";
 
 type CompanyContactActionsProps = {
   company: PublicCompanyDetail;
@@ -80,13 +81,7 @@ export function CompanyContactActions({ company }: CompanyContactActionsProps): 
 }
 
 function registerExternalClick(companyId: string, type: ContactAction["type"]): void {
-  const sessionStorageKey = "palma-da-mao-session-id";
-  const existingSessionId = window.localStorage.getItem(sessionStorageKey);
-  const sessionId = existingSessionId ?? crypto.randomUUID();
-
-  if (!existingSessionId) {
-    window.localStorage.setItem(sessionStorageKey, sessionId);
-  }
+  const sessionId = getOrCreateMetricSessionId();
 
   fetch("/api/metrics", {
     method: "POST",

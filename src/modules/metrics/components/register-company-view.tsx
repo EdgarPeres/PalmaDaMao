@@ -1,21 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
+import { getOrCreateMetricSessionId } from "@/modules/metrics/utils/metric-session";
 
 type RegisterCompanyViewProps = {
   companyId: string;
 };
 
-const sessionStorageKey = "palma-da-mao-session-id";
-
 export function RegisterCompanyView({ companyId }: RegisterCompanyViewProps): null {
   useEffect(() => {
-    const existingSessionId = window.localStorage.getItem(sessionStorageKey);
-    const sessionId = existingSessionId ?? crypto.randomUUID();
-
-    if (!existingSessionId) {
-      window.localStorage.setItem(sessionStorageKey, sessionId);
-    }
+    const sessionId = getOrCreateMetricSessionId();
 
     fetch("/api/metrics", {
       method: "POST",
