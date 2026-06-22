@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import { MapPin } from "lucide-react";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PublicFooter } from "@/components/layout/public-footer";
 import { PublicHeader } from "@/components/layout/public-header";
 import { CompanyContactActions } from "@/modules/company/components/company-contact-actions";
@@ -59,6 +59,10 @@ export default async function CompanyPage({ params }: CompanyPageProps): Promise
 
   if (!company) {
     notFound();
+  }
+
+  if (settings.maintenanceMode) {
+    redirect("/manutencao");
   }
 
   return (

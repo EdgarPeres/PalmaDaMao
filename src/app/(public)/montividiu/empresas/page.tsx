@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Search } from "lucide-react";
+import { redirect } from "next/navigation";
 import { PublicFooter } from "@/components/layout/public-footer";
 import { PublicHeader } from "@/components/layout/public-header";
 import { CompanyCard } from "@/modules/company/components/company-card";
@@ -37,6 +38,10 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
     getPublicSiteSettings(),
     getPublicCompanies(citySlug, query)
   ]);
+
+  if (settings.maintenanceMode) {
+    redirect("/manutencao");
+  }
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
