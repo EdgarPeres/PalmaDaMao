@@ -6,6 +6,10 @@ const fallbackSummary: DashboardSummary = {
   totalCategories: 0,
   totalViews: 0,
   totalWhatsappClicks: 0,
+  totalInstagramClicks: 0,
+  totalMainLinkClicks: 0,
+  activeCompanies: 0,
+  inactiveCompanies: 0,
   mostViewedCompanies: []
 };
 

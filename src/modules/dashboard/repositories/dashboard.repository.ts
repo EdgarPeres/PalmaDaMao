@@ -5,13 +5,29 @@ import type { DashboardSummary } from "@/modules/dashboard/types/dashboard-summa
 export async function getDashboardSummary(): Promise<DashboardSummary> {
   const [
     totalCompanies,
+    activeCompanies,
+    inactiveCompanies,
     totalCategories,
     totalViews,
     totalWhatsappClicks,
+    totalInstagramClicks,
+    totalMainLinkClicks,
     viewedCompanyGroups
   ] = await Promise.all([
     prisma.company.count({
       where: {
+        deletedAt: null
+      }
+    }),
+    prisma.company.count({
+      where: {
+        active: true,
+        deletedAt: null
+      }
+    }),
+    prisma.company.count({
+      where: {
+        active: false,
         deletedAt: null
       }
     }),
@@ -24,6 +40,16 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
     prisma.clickEvent.count({
       where: {
         type: ClickEventType.WHATSAPP
+      }
+    }),
+    prisma.clickEvent.count({
+      where: {
+        type: ClickEventType.INSTAGRAM
+      }
+    }),
+    prisma.clickEvent.count({
+      where: {
+        type: ClickEventType.MAIN_LINK
       }
     }),
     prisma.clickEvent.groupBy({
@@ -62,6 +88,10 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
     totalCategories,
     totalViews,
     totalWhatsappClicks,
+    totalInstagramClicks,
+    totalMainLinkClicks,
+    activeCompanies,
+    inactiveCompanies,
     mostViewedCompanies: viewedCompanyGroups.map((group) => ({
       id: group.companyId,
       name: companyNamesById.get(group.companyId) ?? "Empresa removida",
