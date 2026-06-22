@@ -4,15 +4,11 @@ import { Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type { PublicCompanyCard } from "@/modules/company/types/public-company";
 
-type CompanySearchProps = {
-  citySlug: string;
-};
-
 type SearchResponse = {
   companies: PublicCompanyCard[];
 };
 
-export function CompanySearch({ citySlug }: CompanySearchProps): React.ReactElement {
+export function CompanySearch(): React.ReactElement {
   const [query, setQuery] = useState("");
   const [companies, setCompanies] = useState<PublicCompanyCard[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +28,6 @@ export function CompanySearch({ citySlug }: CompanySearchProps): React.ReactElem
 
       try {
         const params = new URLSearchParams({
-          city: citySlug,
           q: normalizedQuery
         });
         const response = await fetch(`/api/companies/search?${params.toString()}`, {
@@ -55,7 +50,7 @@ export function CompanySearch({ citySlug }: CompanySearchProps): React.ReactElem
       controller.abort();
       window.clearTimeout(timeout);
     };
-  }, [citySlug, normalizedQuery]);
+  }, [normalizedQuery]);
 
   return (
     <section className="space-y-3" aria-label="Busca de empresas" id="busca">

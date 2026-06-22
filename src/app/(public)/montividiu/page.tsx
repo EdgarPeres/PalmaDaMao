@@ -74,7 +74,7 @@ export default async function MontividiuPage(): Promise<React.ReactElement> {
           </div>
         </div>
 
-        <CompanySearch citySlug={city.slug} />
+        <CompanySearch />
 
         <PublicBannerStrip banners={banners} />
 
