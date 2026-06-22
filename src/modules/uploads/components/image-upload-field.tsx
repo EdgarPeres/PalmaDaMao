@@ -49,14 +49,14 @@ export function ImageUploadField({
       const data = (await response.json()) as UploadResponse;
 
       if (!response.ok || !data.upload) {
-        setMessage(data.error ?? "Não foi possível enviar a imagem.");
+        setMessage(data.error ?? "Nao foi possivel enviar a imagem.");
         return;
       }
 
       setValue(data.upload.url);
       setMessage("Imagem enviada.");
     } catch {
-      setMessage("Não foi possível enviar a imagem.");
+      setMessage("Nao foi possivel enviar a imagem.");
     } finally {
       setIsUploading(false);
     }

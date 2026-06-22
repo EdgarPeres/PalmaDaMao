@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { saveCompanyAction, type CompanyActionState } from "@/modules/company/actions/company.actions";
+import { ImageUploadField } from "@/modules/uploads/components/image-upload-field";
 import type { AdminCompany } from "@/modules/company/repositories/admin-company.repository";
 import type { AdminCategory } from "@/modules/category/repositories/admin-category.repository";
 import type { AdminCityOption } from "@/modules/city/repositories/admin-city.repository";
@@ -30,7 +31,7 @@ export function CompanyForm({ categories, cities, companies }: CompanyFormProps)
       <div>
         <h3 className="text-base font-semibold">{selectedCompany ? "Editar empresa" : "Nova empresa"}</h3>
         <p className="mt-1 text-sm text-slate-600">
-          Cadastre empresas para exibição pública. Pelo menos um canal de contato é obrigatório.
+          Cadastre empresas para exibicao publica. Pelo menos um canal de contato e obrigatorio.
         </p>
       </div>
 
@@ -75,13 +76,25 @@ export function CompanyForm({ categories, cities, companies }: CompanyFormProps)
         <Field defaultValue={selectedCompany?.instagram ?? ""} label="Instagram" name="instagram" placeholder="@empresa" selectedId={selectedCompany?.id} />
         <Field defaultValue={selectedCompany?.website ?? ""} label="Site" name="website" placeholder="https://..." selectedId={selectedCompany?.id} />
         <Field defaultValue={selectedCompany?.mainLink ?? ""} label="Link principal" name="mainLink" placeholder="https://..." selectedId={selectedCompany?.id} />
-        <Field defaultValue={selectedCompany?.logoUrl ?? ""} label="Logo" name="logoUrl" placeholder="/uploads/logo.png ou https://..." selectedId={selectedCompany?.id} />
-        <Field defaultValue={selectedCompany?.bannerUrl ?? ""} label="Banner" name="bannerUrl" placeholder="/uploads/banner.png ou https://..." selectedId={selectedCompany?.id} />
+        <ImageUploadField
+          defaultValue={selectedCompany?.logoUrl ?? ""}
+          folder="company-logos"
+          key={`logo-${selectedCompany?.id ?? "new"}`}
+          label="Logo"
+          name="logoUrl"
+        />
+        <ImageUploadField
+          defaultValue={selectedCompany?.bannerUrl ?? ""}
+          folder="company-banners"
+          key={`banner-${selectedCompany?.id ?? "new"}`}
+          label="Banner"
+          name="bannerUrl"
+        />
         <Field defaultValue={selectedCompany?.featuredOrder ?? ""} label="Ordem destaque" name="featuredOrder" placeholder="1" selectedId={selectedCompany?.id} type="number" />
       </div>
 
       <label className="block space-y-2 text-sm font-medium">
-        <span>Descrição</span>
+        <span>Descricao</span>
         <textarea
           className="min-h-28 w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
           defaultValue={selectedCompany?.description ?? ""}
@@ -168,7 +181,7 @@ export function CompanyForm({ categories, cities, companies }: CompanyFormProps)
       {state.message ? <p className={`text-sm font-medium ${state.ok ? "text-green-700" : "text-red-600"}`}>{state.message}</p> : null}
 
       <Button disabled={isPending || categories.length === 0 || cities.length === 0} type="submit">
-        {isPending ? "Salvando..." : selectedCompany ? "Salvar alterações" : "Criar empresa"}
+        {isPending ? "Salvando..." : selectedCompany ? "Salvar alteracoes" : "Criar empresa"}
       </Button>
     </form>
   );
