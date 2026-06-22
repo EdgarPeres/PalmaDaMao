@@ -25,7 +25,7 @@ export function BannerForm({ banners }: BannerFormProps): React.ReactElement {
     <form action={formAction} className="space-y-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <div>
         <h3 className="text-base font-semibold">{selectedBanner ? "Editar banner" : "Novo banner"}</h3>
-        <p className="mt-1 text-sm text-slate-600">A home exibe no máximo 5 banners ativos.</p>
+        <p className="mt-1 text-sm text-slate-600">A home exibe no maximo 5 banners ativos.</p>
       </div>
 
       <input name="id" type="hidden" value={selectedBanner?.id ?? ""} />
@@ -49,9 +49,9 @@ export function BannerForm({ banners }: BannerFormProps): React.ReactElement {
       <div className="grid gap-4 sm:grid-cols-2">
         <Field
           defaultValue={selectedBanner?.title ?? ""}
-          label="Título"
+          label="Titulo"
           name="title"
-          placeholder="Título do banner"
+          placeholder="Titulo do banner"
           selectedId={selectedBanner?.id}
         />
         <Field
@@ -89,7 +89,7 @@ export function BannerForm({ banners }: BannerFormProps): React.ReactElement {
       ) : null}
 
       <Button disabled={isPending} type="submit">
-        {isPending ? "Salvando..." : selectedBanner ? "Salvar alterações" : "Criar banner"}
+        {isPending ? "Salvando..." : selectedBanner ? "Salvar alteracoes" : "Criar banner"}
       </Button>
     </form>
   );

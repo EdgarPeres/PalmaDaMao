@@ -15,15 +15,15 @@ export default async function AdminSettingsPage(): Promise<React.ReactElement> {
     <AdminShell userEmail={session.user.email}>
       <div className="flex flex-col gap-6">
         <div>
-          <h2 className="text-2xl font-bold">Configurações</h2>
+          <h2 className="text-2xl font-bold">Configuracoes</h2>
           <p className="mt-1 text-sm text-slate-600">
-            Edite informações públicas do portal e controle o modo manutenção.
+            Edite informacoes publicas do portal e controle o modo manutencao.
           </p>
         </div>
 
         {cities.length === 0 ? (
           <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-            Cadastre ou rode o seed de cidade antes de salvar configurações.
+            Cadastre ou rode o seed de cidade antes de salvar configuracoes.
           </div>
         ) : null}
 

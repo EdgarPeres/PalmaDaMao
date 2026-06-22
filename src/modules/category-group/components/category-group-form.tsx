@@ -33,7 +33,7 @@ export function CategoryGroupForm({ groups }: CategoryGroupFormProps): React.Rea
       <div>
         <h3 className="text-base font-semibold">{selectedGroup ? "Editar grupo" : "Novo grupo"}</h3>
         <p className="mt-1 text-sm text-slate-600">
-          Organize categorias por grupos como Alimentação, Saúde e Serviços.
+          Organize categorias por grupos como Alimentacao, Saude e Servicos.
         </p>
       </div>
 
@@ -56,50 +56,10 @@ export function CategoryGroupForm({ groups }: CategoryGroupFormProps): React.Rea
       </label>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <label className="block space-y-2 text-sm font-medium">
-          <span>Nome</span>
-          <input
-            className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
-            defaultValue={selectedGroup?.name ?? ""}
-            key={`name-${selectedGroup?.id ?? "new"}`}
-            name="name"
-            placeholder="Ex.: Alimentação"
-          />
-        </label>
-
-        <label className="block space-y-2 text-sm font-medium">
-          <span>Ordem</span>
-          <input
-            className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
-            defaultValue={selectedGroup?.order ?? 0}
-            key={`order-${selectedGroup?.id ?? "new"}`}
-            min={0}
-            name="order"
-            type="number"
-          />
-        </label>
-
-        <label className="block space-y-2 text-sm font-medium">
-          <span>Ícone</span>
-          <input
-            className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
-            defaultValue={selectedGroup?.icon ?? ""}
-            key={`icon-${selectedGroup?.id ?? "new"}`}
-            name="icon"
-            placeholder="Nome do ícone"
-          />
-        </label>
-
-        <label className="block space-y-2 text-sm font-medium">
-          <span>Cor</span>
-          <input
-            className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
-            defaultValue={selectedGroup?.color ?? ""}
-            key={`color-${selectedGroup?.id ?? "new"}`}
-            name="color"
-            placeholder="#0069FC"
-          />
-        </label>
+        <Field defaultValue={selectedGroup?.name ?? ""} label="Nome" name="name" placeholder="Ex.: Alimentacao" selectedId={selectedGroup?.id} />
+        <Field defaultValue={selectedGroup?.order ?? 0} label="Ordem" name="order" placeholder="0" selectedId={selectedGroup?.id} type="number" />
+        <Field defaultValue={selectedGroup?.icon ?? ""} label="Icone" name="icon" placeholder="Nome do icone" selectedId={selectedGroup?.id} />
+        <Field defaultValue={selectedGroup?.color ?? ""} label="Cor" name="color" placeholder="#0069FC" selectedId={selectedGroup?.id} />
       </div>
 
       <label className="flex items-center gap-3 text-sm font-medium">
@@ -120,8 +80,33 @@ export function CategoryGroupForm({ groups }: CategoryGroupFormProps): React.Rea
       ) : null}
 
       <Button disabled={isPending} type="submit">
-        {isPending ? "Salvando..." : selectedGroup ? "Salvar alterações" : "Criar grupo"}
+        {isPending ? "Salvando..." : selectedGroup ? "Salvar alteracoes" : "Criar grupo"}
       </Button>
     </form>
+  );
+}
+
+type FieldProps = {
+  defaultValue: string | number;
+  label: string;
+  name: string;
+  placeholder: string;
+  selectedId?: string;
+  type?: string;
+};
+
+function Field({ defaultValue, label, name, placeholder, selectedId, type = "text" }: FieldProps): React.ReactElement {
+  return (
+    <label className="block space-y-2 text-sm font-medium">
+      <span>{label}</span>
+      <input
+        className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
+        defaultValue={defaultValue}
+        key={`${name}-${selectedId ?? "new"}`}
+        name={name}
+        placeholder={placeholder}
+        type={type}
+      />
+    </label>
   );
 }

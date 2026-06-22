@@ -32,7 +32,7 @@ export function CategoryForm({ categories, groups }: CategoryFormProps): React.R
       <div>
         <h3 className="text-base font-semibold">{selectedCategory ? "Editar categoria" : "Nova categoria"}</h3>
         <p className="mt-1 text-sm text-slate-600">
-          Vincule categorias aos grupos para organizar a navegação pública.
+          Vincule categorias aos grupos para organizar a navegacao publica.
         </p>
       </div>
 
@@ -72,50 +72,10 @@ export function CategoryForm({ categories, groups }: CategoryFormProps): React.R
           </select>
         </label>
 
-        <label className="block space-y-2 text-sm font-medium">
-          <span>Nome</span>
-          <input
-            className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
-            defaultValue={selectedCategory?.name ?? ""}
-            key={`name-${selectedCategory?.id ?? "new"}`}
-            name="name"
-            placeholder="Ex.: Restaurantes"
-          />
-        </label>
-
-        <label className="block space-y-2 text-sm font-medium">
-          <span>Ordem</span>
-          <input
-            className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
-            defaultValue={selectedCategory?.order ?? 0}
-            key={`order-${selectedCategory?.id ?? "new"}`}
-            min={0}
-            name="order"
-            type="number"
-          />
-        </label>
-
-        <label className="block space-y-2 text-sm font-medium">
-          <span>Ícone</span>
-          <input
-            className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
-            defaultValue={selectedCategory?.icon ?? ""}
-            key={`icon-${selectedCategory?.id ?? "new"}`}
-            name="icon"
-            placeholder="Nome do ícone"
-          />
-        </label>
-
-        <label className="block space-y-2 text-sm font-medium">
-          <span>Cor</span>
-          <input
-            className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
-            defaultValue={selectedCategory?.color ?? ""}
-            key={`color-${selectedCategory?.id ?? "new"}`}
-            name="color"
-            placeholder="#0069FC"
-          />
-        </label>
+        <Field defaultValue={selectedCategory?.name ?? ""} label="Nome" name="name" placeholder="Ex.: Restaurantes" selectedId={selectedCategory?.id} />
+        <Field defaultValue={selectedCategory?.order ?? 0} label="Ordem" name="order" placeholder="0" selectedId={selectedCategory?.id} type="number" />
+        <Field defaultValue={selectedCategory?.icon ?? ""} label="Icone" name="icon" placeholder="Nome do icone" selectedId={selectedCategory?.id} />
+        <Field defaultValue={selectedCategory?.color ?? ""} label="Cor" name="color" placeholder="#0069FC" selectedId={selectedCategory?.id} />
       </div>
 
       <label className="flex items-center gap-3 text-sm font-medium">
@@ -136,8 +96,33 @@ export function CategoryForm({ categories, groups }: CategoryFormProps): React.R
       ) : null}
 
       <Button disabled={isPending || groups.length === 0} type="submit">
-        {isPending ? "Salvando..." : selectedCategory ? "Salvar alterações" : "Criar categoria"}
+        {isPending ? "Salvando..." : selectedCategory ? "Salvar alteracoes" : "Criar categoria"}
       </Button>
     </form>
+  );
+}
+
+type FieldProps = {
+  defaultValue: string | number;
+  label: string;
+  name: string;
+  placeholder: string;
+  selectedId?: string;
+  type?: string;
+};
+
+function Field({ defaultValue, label, name, placeholder, selectedId, type = "text" }: FieldProps): React.ReactElement {
+  return (
+    <label className="block space-y-2 text-sm font-medium">
+      <span>{label}</span>
+      <input
+        className="h-11 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
+        defaultValue={defaultValue}
+        key={`${name}-${selectedId ?? "new"}`}
+        name={name}
+        placeholder={placeholder}
+        type={type}
+      />
+    </label>
   );
 }

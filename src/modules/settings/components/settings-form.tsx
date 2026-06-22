@@ -19,11 +19,15 @@ export function SettingsForm({ cities, settings }: SettingsFormProps): React.Rea
   return (
     <form action={formAction} className="space-y-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field defaultValue={settings?.siteName ?? "Palma da Mão"} label="Nome do portal" name="siteName" />
-        <Field defaultValue={settings?.slogan ?? "As melhores empresas da sua cidade em um só lugar."} label="Slogan" name="slogan" />
+        <Field defaultValue={settings?.siteName ?? "Palma da Mao"} label="Nome do portal" name="siteName" />
+        <Field
+          defaultValue={settings?.slogan ?? "As melhores empresas da sua cidade em um so lugar."}
+          label="Slogan"
+          name="slogan"
+        />
         <Field defaultValue={settings?.primaryColor ?? "#0069FC"} label="Cor principal" name="primaryColor" />
         <label className="block space-y-2 text-sm font-medium">
-          <span>Cidade padrão</span>
+          <span>Cidade padrao</span>
           <select
             className="h-11 w-full rounded-md border border-slate-300 bg-white px-3 outline-none focus:border-primary focus:ring-2 focus:ring-blue-100"
             defaultValue={settings?.defaultCityId ?? cities[0]?.id ?? ""}
@@ -43,17 +47,21 @@ export function SettingsForm({ cities, settings }: SettingsFormProps): React.Rea
       </div>
 
       <TextArea defaultValue={settings?.homeText ?? ""} label="Texto da home" name="homeText" />
-      <TextArea defaultValue={settings?.footerText ?? ""} label="Texto do rodapé" name="footerText" />
+      <TextArea defaultValue={settings?.footerText ?? ""} label="Texto do rodape" name="footerText" />
 
       <label className="flex items-center gap-3 text-sm font-medium">
         <input defaultChecked={settings?.maintenanceMode ?? false} name="maintenanceMode" type="checkbox" />
-        Ativar modo manutenção
+        Ativar modo manutencao
       </label>
 
-      {state.message ? <p className={`text-sm font-medium ${state.ok ? "text-green-700" : "text-red-600"}`}>{state.message}</p> : null}
+      {state.message ? (
+        <p className={`text-sm font-medium ${state.ok ? "text-green-700" : "text-red-600"}`}>
+          {state.message}
+        </p>
+      ) : null}
 
       <Button disabled={isPending || cities.length === 0} type="submit">
-        {isPending ? "Salvando..." : "Salvar configurações"}
+        {isPending ? "Salvando..." : "Salvar configuracoes"}
       </Button>
     </form>
   );
