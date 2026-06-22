@@ -117,6 +117,7 @@ modules/company/
 /admin/login
 /admin/dashboard
 /admin/empresas
+/admin/cidades
 /admin/categorias
 /admin/grupos
 /admin/banners

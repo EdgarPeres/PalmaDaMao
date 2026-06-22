@@ -1,5 +1,6 @@
 import {
   Building2,
+  MapPinned,
   Images,
   LayoutDashboard,
   ListTree,
@@ -20,6 +21,7 @@ type AdminShellProps = {
 const navItems = [
   { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { label: "Empresas", href: "/admin/empresas", icon: Building2 },
+  { label: "Cidades", href: "/admin/cidades", icon: MapPinned },
   { label: "Categorias", href: "/admin/categorias", icon: Tags },
   { label: "Grupos", href: "/admin/grupos", icon: ListTree },
   { label: "Banners", href: "/admin/banners", icon: Images },
